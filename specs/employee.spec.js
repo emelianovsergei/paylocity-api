@@ -1,10 +1,14 @@
 import EmployeeHelper from '../helpers/employee.helper'
 import { expect } from 'chai'
-import {getRandomItem} from '../helpers/common.helper'
+import { getRandomItem } from '../helpers/common.helper'
+import { benefitsCostMonth } from '../helpers/common.helper'
 
 describe('Employees', function() {
   let employeeHelper = new EmployeeHelper()
   let employeeId
+  let salary
+  let dependants
+  let properNet
 
 
   before(async function(){
@@ -42,6 +46,13 @@ describe('Employees', function() {
 
     it('response body contains 52000 salary', function() {
       expect(employeeHelper.response.body.salary).to.eq(52000)
+    })
+
+    it('proper amount of employee net income', function() {
+      salary = employeeHelper.response.body.salary
+      dependants = employeeHelper.response.body.dependants
+      properNet = (benefitsCostMonth(salary, dependants))
+      expect(employeeHelper.response.body.benefitsCost).to.eq(properNet)
     })
   })
 
